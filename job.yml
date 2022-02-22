@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+experiment_name: stock
+command: python test7.py
+environment: azureml:AzureML-tensorflow-2.4-ubuntu18.04-py37-cpu-inference:29
+compute: azureml:cluster1
