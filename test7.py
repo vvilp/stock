@@ -6,7 +6,7 @@ from tensorflow.keras import layers
 from sklearn.preprocessing import minmax_scale
 
 
-codes = ['ALL.AX' ,'GMG.AX' , 'ANZ.AX', 'BHP.AX', 'SUN.AX' ,  'CSL.AX', 'FMG.AX']
+codes = ['AXJO'  ]
 seq_array = []
 # seq_array.append(get_rate_array(get_column_data_csv("data/SUN.AX.csv", "Adj Close")))
 for code in codes:
@@ -15,10 +15,13 @@ for code in codes:
     # seq_array.append(prices)
     seq_array.append(minmax_scale(prices, feature_range=(0,100)))
 
+for i in range (5, 15 ,2):
+    avg_prices = get_pre_n_average_array(seq_array[0], i  * 2)
+    seq_array.append(avg_prices)
+
 seq_len =  len(seq_array[0])
 
-
-input_steps = 15
+input_steps = 30
 target_steps = 10
 n_features = len(seq_array)
 
@@ -39,11 +42,11 @@ test_x, test_y = input[sep_index:], target[sep_index:]
 
 
 model = tf.keras.Sequential()
-model.add(layers.GRU(n_features * 10, activation='relu', input_shape=(input_steps, n_features)))
-model.add(layers.Dense(n_features * 2 , activation='relu'))
+model.add(layers.GRU(n_features * 5, activation='relu', input_shape=(input_steps, n_features)))
+model.add(layers.Dense(target_steps * 2 , activation='relu'))
 model.add(layers.Dense(target_steps))
 model.summary()
-model.compile(optimizer=tf.keras.optimizers.RMSprop(0.001), loss=tf.keras.losses.Huber())
+model.compile(optimizer=tf.keras.optimizers.RMSprop(0.0001), loss=tf.keras.losses.Huber())
 h = model.fit(train_x,train_y, epochs=50)
 
 p_train_y = model.predict(train_x)

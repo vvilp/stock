@@ -109,6 +109,8 @@ def plot_sub(x_arrays, y_arrays, label_array, file_name):
             x = x_array[i]
             y = y_array[i]
             ax.plot(x, y, label = label_array[i])
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
     ax.legend(loc='best')
     plt.savefig(file_name, dpi=300)
 
