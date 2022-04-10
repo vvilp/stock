@@ -84,7 +84,18 @@ def split_combine_seq(seq_array, seq_len, n_steps, target_steps):
         if i + n_steps + target_steps == seq_len:
             break
     return x_array , y_array
-        
+
+def get_last_n_input(seq_array, seq_len, n_steps):
+    x_array = []
+    i = seq_len - n_steps
+    x = []
+    for step in range(0, n_steps):
+        feature_array = []
+        for iii, seq in enumerate(seq_array):
+            feature_array.append(seq[i + step])
+        x.append(feature_array)
+    x_array.append(x)
+    return x_array  
 
 
 def plot(x_array, y_array, label_array, file_name):
@@ -94,6 +105,13 @@ def plot(x_array, y_array, label_array, file_name):
         x = x_array[i]
         y = y_array[i]
         ax.plot(x, y, label = label_array[i])
+    ax.legend(loc='best')
+    plt.savefig(file_name, dpi=300)
+
+def plot_simple(x, y,file_name):
+    fig = plt.figure(figsize=(10,5))
+    ax = fig.add_subplot(111)
+    ax.plot(x, y)
     ax.legend(loc='best')
     plt.savefig(file_name, dpi=300)
 

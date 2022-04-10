@@ -58,11 +58,12 @@ class DB:
                         );
                     ''')
 
-# from_time = int(datetime.datetime(2000,1,1).timestamp())
-# to_time = int(datetime.datetime.now().timestamp())
-# code = "ANZ.AX"
-# data = DownloadData(code, from_time, to_time)
-# data.save("anz.csv")
+codes = ["AUDUSD%3DX", "BHP.AX", "CL%3DF"]
+from_time = int(datetime.datetime(2017,1,1).timestamp())
+to_time = int(datetime.datetime.now().timestamp())
+for code in codes:
+    data = DownloadData(code, from_time, to_time)
+    data.save(f"{code}.csv")
 
-db = DB()
-db.create_table()
+# db = DB()
+# db.create_table()
