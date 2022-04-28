@@ -9,7 +9,6 @@ from sklearn.preprocessing import minmax_scale
 # codes = ["BHP.AX", "AUDUSD%3DX", "CL%3DF"]
 codes = ["BHP.AX", "AUDUSD%3DX"]
 seq_array = []
-# seq_array.append(get_rate_array(get_column_data_csv("data/SUN.AX.csv", "Adj Close")))
 for code in codes:
     prices = get_column_data_csv(f"data/{code}.csv", "Adj Close")
     # seq_array.append(get_rate_array(prices))
@@ -42,13 +41,10 @@ target = np.array(y)
 print(input[-10:])
 print(last_x_input)
 
-
 sep_index = int(seq_len * 0.80)
 # print (sep_index)
 train_x, train_y = input[:sep_index], target[:sep_index]
 test_x, test_y = input[sep_index:], target[sep_index:]
-
-
 
 model = tf.keras.Sequential()
 model.add(layers.GRU(n_features * 5, activation='relu', input_shape=(input_steps, n_features)))
@@ -59,15 +55,8 @@ model.compile(optimizer=tf.keras.optimizers.RMSprop(0.0001), loss=tf.keras.losse
 h = model.fit(train_x,train_y, epochs=200)
 
 p_train_y = model.predict(train_x)
-
 p_test_y = model.predict(test_x)
-
 p_last = model.predict(last_x_input)
-
-
-# print (test_y[0])
-# print (p_test_y[0])
-print (p_last[0])
 
 mse = (np.square(test_y - p_test_y)).mean(axis=1)
 # print (mse)
@@ -99,7 +88,6 @@ for i in range (8):
 plot_sub(plot_x_arrays, plot_y_arrays, label_array, "plot/predict_last_n_days_multiple.png")
 
 loss = h.history['loss']
-# loss = loss[50:]
 plot_x_array = [range(0,len(loss)) ]
 plot_y_array = [loss]
 plot(plot_x_array, plot_y_array, ["loss"], "plot/loss.png")
